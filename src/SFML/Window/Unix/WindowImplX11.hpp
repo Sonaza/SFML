@@ -187,6 +187,8 @@ public:
     ////////////////////////////////////////////////////////////
     virtual bool hasFocus() const;
 
+    virtual void setCustomEventCallback(void *customCallback);
+
 protected:
 
     ////////////////////////////////////////////////////////////
@@ -320,6 +322,9 @@ private:
     Pixmap             m_iconPixmap;     ///< The current icon pixmap if in use
     Pixmap             m_iconMaskPixmap; ///< The current icon mask pixmap if in use
     ::Time             m_lastInputTime;  ///< Last time we received user input
+    
+    typedef bool(*CustomEventCallback)(XEvent& windowEvent);
+    CustomEventCallback m_customCallback = nullptr;
 };
 
 } // namespace priv

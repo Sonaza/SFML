@@ -1220,6 +1220,16 @@ bool WindowImplX11::hasFocus() const
     return (m_window == focusedWindow);
 }
 
+void WindowImplX11::setCustomEventCallback(void *customCallback)
+{
+    if (customCallback == nullptr)
+    {
+        m_customCallback = nullptr;
+        return;
+    }
+
+    m_customCallback = (CustomEventCallback)customCallback;
+}
 
 ////////////////////////////////////////////////////////////
 void WindowImplX11::grabFocus()
@@ -1681,6 +1691,14 @@ bool WindowImplX11::processEvent(XEvent& windowEvent)
     // SFML only wants repeated KeyPress events. Thus, we have to:
     // - Discard duplicated KeyRelease events when KeyRepeatEnabled is true
     // - Discard both duplicated KeyPress and KeyRelease events when KeyRepeatEnabled is false
+
+    if (m_customCallback != nullptr)
+    {
+        // If callback returns true it will be considered as having handled everything.
+        bool overridesDefault = m_customCallback(windowEvent);
+        if (overridesDefault)
+            return true;
+    }
 
     // Detect repeated key events
     if (windowEvent.type == KeyRelease)
