@@ -314,6 +314,12 @@ bool WindowBase::createVulkanSurface(const VkInstance& instance, VkSurfaceKHR& s
     return m_impl ? m_impl->createVulkanSurface(instance, surface, allocator) : false;
 }
 
+////////////////////////////////////////////////////////////
+void WindowBase::setCustomSystemEventCallback(void *customCallback)
+{
+    if (m_impl != nullptr)
+        m_impl->setCustomEventCallback(customCallback);
+}
 
 ////////////////////////////////////////////////////////////
 void WindowBase::onCreate()

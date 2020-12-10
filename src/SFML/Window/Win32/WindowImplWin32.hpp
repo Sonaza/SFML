@@ -183,6 +183,8 @@ public:
     ///
     ////////////////////////////////////////////////////////////
     virtual bool hasFocus() const;
+    
+    virtual void setCustomEventCallback(void *customCallback);
 
 protected:
 
@@ -284,6 +286,9 @@ private:
     bool     m_mouseInside;      //!< Mouse is inside the window?
     bool     m_fullscreen;       //!< Is the window fullscreen?
     bool     m_cursorGrabbed;    //!< Is the mouse cursor trapped?
+    
+    typedef bool(*CustomEventCallback)(UINT message, WPARAM wParam, LPARAM lParam);
+    CustomEventCallback m_customCallback = nullptr;
 };
 
 } // namespace priv

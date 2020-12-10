@@ -238,7 +238,9 @@ public:
     ///
     ////////////////////////////////////////////////////////////
     bool createVulkanSurface(const VkInstance& instance, VkSurfaceKHR& surface, const VkAllocationCallbacks* allocator);
-
+    
+    virtual void setCustomEventCallback(void *customCallback) = 0;
+    
 protected:
 
     ////////////////////////////////////////////////////////////

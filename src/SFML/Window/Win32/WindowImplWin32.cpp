@@ -459,6 +459,17 @@ bool WindowImplWin32::hasFocus() const
     return m_handle == GetForegroundWindow();
 }
 
+////////////////////////////////////////////////////////////
+void WindowImplWin32::setCustomEventCallback(void *customCallback)
+{
+    if (customCallback == nullptr)
+    {
+        m_customCallback = nullptr;
+        return;
+    }
+
+    m_customCallback = (CustomEventCallback)customCallback;
+}
 
 ////////////////////////////////////////////////////////////
 void WindowImplWin32::registerWindowClass()
@@ -564,6 +575,14 @@ void WindowImplWin32::processEvent(UINT message, WPARAM wParam, LPARAM lParam)
     // Don't process any message until window is created
     if (m_handle == NULL)
         return;
+    
+    if (m_customCallback != nullptr)
+    {
+        // If callback returns true it will be considered as having handled everything.
+        bool overridesDefault = m_customCallback(message, wParam, lParam);
+        if (overridesDefault)
+            return;
+    }
 
     switch (message)
     {
