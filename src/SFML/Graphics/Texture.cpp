@@ -37,6 +37,7 @@
 #include <cassert>
 #include <cstring>
 
+#define GL_BGRA 0x80E1
 
 namespace
 {
@@ -396,15 +397,15 @@ Image Texture::copyToImage() const
 
 
 ////////////////////////////////////////////////////////////
-void Texture::update(const Uint8* pixels)
+void Texture::update(const Uint8* pixels, PixelFormat format)
 {
     // Update the whole texture
-    update(pixels, m_size.x, m_size.y, 0, 0);
+    update(pixels, m_size.x, m_size.y, 0, 0, format);
 }
 
 
 ////////////////////////////////////////////////////////////
-void Texture::update(const Uint8* pixels, unsigned int width, unsigned int height, unsigned int x, unsigned int y)
+void Texture::update(const Uint8* pixels, unsigned int width, unsigned int height, unsigned int x, unsigned int y, PixelFormat format)
 {
     assert(x + width <= m_size.x);
     assert(y + height <= m_size.y);
@@ -418,7 +419,7 @@ void Texture::update(const Uint8* pixels, unsigned int width, unsigned int heigh
 
         // Copy pixels from the given array to the texture
         glCheck(glBindTexture(GL_TEXTURE_2D, m_texture));
-        glCheck(glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels));
+        glCheck(glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, format == RGBA ? GL_RGBA : GL_BGRA, GL_UNSIGNED_BYTE, pixels));
         glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_isSmooth ? GL_LINEAR : GL_NEAREST));
         m_hasMipmap = false;
         m_pixelsFlipped = false;

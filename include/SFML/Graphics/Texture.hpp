@@ -58,6 +58,12 @@ public:
         Normalized, //!< Texture coordinates in range [0 .. 1]
         Pixels      //!< Texture coordinates in range [0 .. size]
     };
+    
+    enum PixelFormat
+    {
+        RGBA,
+        BGRA,
+    };
 
 public:
 
@@ -253,7 +259,7 @@ public:
     /// \param pixels Array of pixels to copy to the texture
     ///
     ////////////////////////////////////////////////////////////
-    void update(const Uint8* pixels);
+    void update(const Uint8* pixels, PixelFormat format = RGBA);
 
     ////////////////////////////////////////////////////////////
     /// \brief Update a part of the texture from an array of pixels
@@ -275,7 +281,7 @@ public:
     /// \param y      Y offset in the texture where to copy the source pixels
     ///
     ////////////////////////////////////////////////////////////
-    void update(const Uint8* pixels, unsigned int width, unsigned int height, unsigned int x, unsigned int y);
+    void update(const Uint8* pixels, unsigned int width, unsigned int height, unsigned int x, unsigned int y, PixelFormat format = RGBA);
 
     ////////////////////////////////////////////////////////////
     /// \brief Update a part of this texture from another texture
